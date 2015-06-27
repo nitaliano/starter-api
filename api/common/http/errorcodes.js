@@ -1,4 +1,7 @@
 module.exports = {
+	// basic http errors
+	ROUTE_NOT_FOUND: new ErrorCode(404, 'Route Not Found'),
+
 	// user errors 50000 - 50020
 	INVALID_USER_ID:  new ErrorCode(50000, 'Invalid User Id'),
 	USER_NOT_FOUND: new ErrorCode(50001, 'User Not Found'),

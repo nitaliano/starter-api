@@ -1,32 +1,20 @@
 var fs = require('fs'),
   express = require('express'),
-  mongoose = require('mongoose'),
   bodyParser = require('body-parser'),
-  app = express(),
-  server = require('http').Server(app),
-  port = process.env.PORT || 3000;
+	errorCodes = require('./api/common/http/errorcodes'),
+	Database = require('./api/common/core/database'),
+	Response = require('./api/common/http/response'),
+  app = express();
 
-// TODO: Use https://github.com/motdotla/dotenv for config files, all configs are hard coded until we add that in
+// load in env variables
+require('dotenv').load();
 
-// TODO: Will eventually abstract this db logic into its own layer
-// TODO: Update the options used to connect to mongo these are just basic for now
-var connect = function () {
-  mongoose.connect('mongodb://localhost/test', {
-    server: {
-      socketOptions: { keepAlive: 1 }
-    }
-  });
-};
-
-connect();
-mongoose.connection.on('error', console.log);
-mongoose.connection.on('disconnected', connect);
+// connect to mongo
+new Database();
 
 // TODO: Add cors support here before all other middleware
 
 // request parsers
-// TODO: These should be on a route to route basis instead of parsing the body of all requests, here for ease of dev
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // bootstrap models
@@ -41,7 +29,7 @@ fs.readdirSync(modelsDir).forEach(function (modelName) {
 var controllersDir = __dirname + '/api/controllers';
 fs.readdirSync(controllersDir).forEach(function (controllerName) {
   var controller, Controller;
-  
+
   if (controllerName.indexOf('.js') !== -1) {
     Controller = require(controllersDir + '/' + controllerName);
     controller = new Controller();
@@ -56,8 +44,8 @@ app.get('/', function (req, res) {
 
 app.use(function (req, res) {
   res.status(404);
-  res.json({ code: 404, message: 'Route not found' });
+  res.json(new Response(errorCodes.ROUTE_NOT_FOUND));
 });
 
-server.listen(port);
-console.log('Api server listening on port ' + port);
+app.listen(process.env.PORT);
+console.log('Api server listening on port ' + process.env.PORT);
