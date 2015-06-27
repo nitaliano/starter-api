@@ -3,6 +3,11 @@ var jwt = require('jsonwebtoken'),
 	errorCodes = require('../common/http/errorcodes');
 
 module.exports = function (req, res, next) {
+	// no need to check for a token on pre flighted requests
+	if (req.method === 'OPTIONS') {
+		return next();
+	}
+
 	jwt.verify(req.query.token, process.env.TOKEN_SECRET, function (err) {
 		if (err) {
 			res.status(500);
