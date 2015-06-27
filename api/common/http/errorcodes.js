@@ -11,7 +11,10 @@ module.exports = {
 	UNABLE_TO_UPDATE_USER: new ErrorCode(50005, 'Unable to update user'),
 	USER_ALREADY_EXISTS: new ErrorCode(50006, 'User already exists'),
 	INVALID_USER_NAME_OR_EMAIL: new ErrorCode(50007, 'Invalid email'),
-	INVALID_USER_PASSWORD: new ErrorCode(50008, 'Invalid user password')
+	INVALID_USER_PASSWORD: new ErrorCode(50008, 'Invalid user password'),
+
+	// auth errors 50021 - 50030
+	INVALID_TOKEN: new ErrorCode(50021, 'Invalid token')
 };
 
 function ErrorCode(code, message) {

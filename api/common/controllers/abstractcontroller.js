@@ -1,15 +1,15 @@
 var util = require('util'),
+	path = require('path'),
 	Response = require('../http/response'),
 	Router = require('../core/router'),
 	logger = require('../core/logger');
 
 module.exports = AbstractController;
 
-function AbstractController(namespace) {
-	// TODO: add apiPrefix to env file
-	this._apiPrefix = 'api/v1';
+function AbstractController(namespace, options) {
 	this._router = new Router();
 	this._namespace = namespace;
+	this._options = options || {};
 	this.routes();
 }
 
@@ -22,7 +22,7 @@ AbstractController.prototype.getRouter = function () {
 };
 
 AbstractController.prototype.setRoute = function (url) {
-	return this._router.handle(util.format('/%s/%s', this._apiPrefix, url));
+	return this._router.handle(path.join(this._options.overrideApiPrefix ? '/' : process.env.API_PREFIX, url));
 };
 
 AbstractController.prototype.sendError = function (errorCode, res) {

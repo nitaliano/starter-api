@@ -17,6 +17,9 @@ new Database();
 // request parsers
 app.use(bodyParser.json());
 
+// make sure all api routes have a token
+app.use(process.env.API_PREFIX, require('./api/middleware/validaterequest'));
+
 // bootstrap models
 var modelsDir = __dirname + '/api/models';
 fs.readdirSync(modelsDir).forEach(function (modelName) {
