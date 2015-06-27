@@ -16,5 +16,8 @@ All you'll need to do is create a file called .env and set the port in the file.
 ```
 PORT=3000
 NODE_ENV=development
+API_PREFIX=/api/v1
+TOKEN_SECRET=shhhhh
+TOKEN_ALG=HS512
 MONGO_URL=mongodb://localhost/test
 ```
