@@ -45,7 +45,7 @@ LoginController.prototype.login = function (req, res) {
 LoginController.prototype._createToken = function (user) {
 	// TODO: Use a key eventually instead of a secret
 	var d = new Date();
-console.log(process.env.TOKEN_ALG, typeof process.env.TOKEN_ALG);
+	
 	return {
 		token: jwt.sign({userId: user._id}, process.env.TOKEN_SECRET, {
 			algorthim: process.env.TOKEN_ALG,
